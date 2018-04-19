@@ -1,5 +1,6 @@
 # Ignore all images
 images/*
+config.json
 
 # Image example whitelist
 !images/4GI-0z5K2i4_coffee.jpg

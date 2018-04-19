@@ -1,5 +1,5 @@
 {
-  "localhost": true,
+  "localhost": false,
   "domain": "https://coffee.alexflipnote.xyz/",
   "imagefolder": "images",
   "suffix": "_coffee",

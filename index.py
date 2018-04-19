@@ -40,8 +40,14 @@ def randomcoffee():
 
 @app.route("/random.json")
 def randomcoffeeJSON():
+    domain = config.domain
+
+    if config.localhost:
+        domain = f"http://localhost:{config.port}/"
+
+    choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
     return jsonify({
-        "file": random.choice([x for x in os.listdir(config.imagefolder)])
+        "file": domain + choose_random
     })
 
 
