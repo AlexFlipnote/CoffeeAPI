@@ -4,17 +4,17 @@ import json
 import renamer
 
 from collections import namedtuple
-from flask import Flask, jsonify, send_from_directory, abort, send_file
+from flask import Flask, jsonify, send_from_directory, abort, send_file, render_template
 
 app = Flask(__name__)
 
-with open("config.json") as data:
+with open("config.json", encoding='utf-8') as data:
     config = json.load(data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
 
 
 @app.route("/")
 def index():
-    return "It works ☕"
+    return render_template('index.html', config=config)
 
 
 @app.route("/teapot")
@@ -25,6 +25,11 @@ def teapot():
 @app.route("/<filename>")
 def coffee(filename):
     return send_from_directory(config.imagefolder, filename)
+
+
+@app.route("/assets/images/<filename>")
+def template_images(filename):
+    return send_from_directory("templates/images", filename)
 
 
 @app.route("/random")
@@ -51,5 +56,7 @@ def randomcoffeeJSON():
     })
 
 
-renamer.randomize(config.imagefolder, config.suffix)
-app.run(port=config.port, debug=config.debug)
+if __name__ == '__main__':
+    renamer.randomize(config.imagefolder, config.suffix)
+    # Flask rest stuff
+    app.run(port=config.port, debug=config.debug)

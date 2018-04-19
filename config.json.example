@@ -1,6 +1,8 @@
 {
   "localhost": false,
   "domain": "https://coffee.alexflipnote.xyz/",
+  "title": "Coffee API",
+  "description": "Start your day with a lovely coffee~",
   "imagefolder": "images",
   "suffix": "_coffee",
   "port": 3300,
