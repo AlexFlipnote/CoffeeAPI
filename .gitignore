@@ -3,6 +3,7 @@ images/*
 config.json
 
 # Image example whitelist
+!images/QDTtF7ewaak_coffee.jpg
 !images/4GI-0z5K2i4_coffee.jpg
 !images/bTzk95h707g_coffee.jpg
 !images/hgjpLGClejo_coffee.jpg
