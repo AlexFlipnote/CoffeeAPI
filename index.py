@@ -36,10 +36,11 @@ def template_images(filename):
 def randomcoffee():
     choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
     name = choose_random.split(".")
+
     return send_file(
         f"{config.imagefolder}/{choose_random}",
-        mimetype="image/png",
-        attachment_filename=f".{name[1]}"
+        mimetype=f"image/{name[1] if name[1] != 'jpg' else 'jpeg'}",
+        attachment_filename=choose_random
     )
 
 
