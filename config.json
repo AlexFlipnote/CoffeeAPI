@@ -1,8 +1,0 @@
-{
-  "localhost": true,
-  "domain": "https://coffee.alexflipnote.xyz/",
-  "imagefolder": "images",
-  "suffix": "_coffee",
-  "port": 3300,
-  "debug": true
-}
