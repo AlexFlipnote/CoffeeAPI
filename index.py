@@ -8,6 +8,7 @@ from collections import namedtuple
 from flask import Flask, jsonify, send_from_directory, abort, send_file, render_template
 
 app = Flask(__name__)
+totalimages = 0
 
 # Checking if you have config.json on your API
 try:
@@ -32,7 +33,7 @@ for extra_dir in extra_dirs:
 @app.route("/")
 def index():
     choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
-    return render_template('index.html', config=config, background=choose_random)
+    return render_template('index.html', config=config, background=choose_random, images=totalimages)
 
 
 @app.route("/teapot")
@@ -77,6 +78,7 @@ def randomcoffeeJSON():
 
 if __name__ == '__main__':
     utils.randomize(config.imagefolder, config.suffix)
+    totalimages = len([x for x in os.listdir(config.imagefolder)])
     # Flask rest stuff
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
