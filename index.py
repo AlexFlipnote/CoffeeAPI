@@ -7,9 +7,6 @@ import utils
 from collections import namedtuple
 from flask import Flask, jsonify, send_from_directory, abort, send_file, render_template
 
-app = Flask(__name__)
-totalimages = 0
-
 # Checking if you have config.json on your API
 try:
     with open("config.json", encoding='utf-8') as data:
@@ -17,6 +14,12 @@ try:
 except FileNotFoundError:
     print("You need to make a config file to be able to run this API")
     sys.exit()
+
+
+app = Flask(__name__)
+
+# Cache all images
+all_images = [x for x in os.listdir(config.imagefolder)]
 
 
 # Check for changes in image folder
@@ -32,8 +35,12 @@ for extra_dir in extra_dirs:
 
 @app.route("/")
 def index():
-    choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
-    return render_template('index.html', config=config, background=choose_random, images=totalimages)
+    return render_template(
+        'index.html',
+        config=config,
+        background=random.choice(all_images),
+        images=len(all_images)
+    )
 
 
 @app.route("/teapot")
@@ -53,7 +60,7 @@ def template_images(filename):
 
 @app.route("/random")
 def randomcoffee():
-    choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
+    choose_random = random.choice(all_images)
     name = choose_random.split(".")
 
     return send_file(
@@ -70,15 +77,13 @@ def randomcoffeeJSON():
     if config.localhost:
         domain = f"http://localhost:{config.port}/"
 
-    choose_random = random.choice([x for x in os.listdir(config.imagefolder)])
     return jsonify({
-        "file": domain + choose_random
+        "file": domain + random.choice(all_images)
     })
 
 
 if __name__ == '__main__':
     utils.randomize(config.imagefolder, config.suffix)
-    totalimages = len([x for x in os.listdir(config.imagefolder)])
     # Flask rest stuff
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
