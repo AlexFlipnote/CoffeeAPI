@@ -19,8 +19,7 @@ except FileNotFoundError:
 app = Flask(__name__)
 
 # Cache all images
-all_images = [x for x in os.listdir(config.imagefolder)]
-
+cache_images = [img for img in os.listdir(config.imagefolder)]
 
 # Check for changes in image folder
 extra_dirs = [config.imagefolder, "templates"]
@@ -36,14 +35,14 @@ for extra_dir in extra_dirs:
 @app.route("/")
 def index():
     return render_template(
-        'index.html',
-        config=config,
-        background=random.choice(all_images),
-        images=len(all_images)
+        'index.html', config=config,
+        background=random.choice(cache_images), images=len(cache_images)
     )
 
 
+# This is just for the memes, the holy 418 error \o/
 @app.route("/teapot")
+@app.route("/418")
 def teapot():
     return abort(418)
 
@@ -60,7 +59,7 @@ def template_images(filename):
 
 @app.route("/random")
 def randomcoffee():
-    choose_random = random.choice(all_images)
+    choose_random = random.choice(cache_images)
     name = choose_random.split(".")
 
     return send_file(
@@ -78,13 +77,10 @@ def randomcoffeeJSON():
         domain = f"http://localhost:{config.port}/"
 
     return jsonify({
-        "file": domain + random.choice(all_images)
+        "file": domain + random.choice(cache_images)
     })
 
 
 if __name__ == '__main__':
     utils.randomize(config.imagefolder, config.suffix)
-    # Flask rest stuff
-    app.jinja_env.auto_reload = True
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(port=config.port, debug=config.debug, extra_files=extra_files)
