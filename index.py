@@ -64,7 +64,7 @@ def randomcoffee():
 
     return send_file(
         f"{config.imagefolder}/{choose_random}",
-        mimetype=f"image/{name[1] if name[1] != 'jpg' else 'jpeg'}",
+        mimetype=f"image/{name[-1] if name[-1] != 'jpg' else 'jpeg'}",
         attachment_filename=choose_random
     )
 

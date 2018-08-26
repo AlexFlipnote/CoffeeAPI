@@ -10,5 +10,5 @@ def randomize(dir, checker):
         else:
             os.rename(
                 f"{dir}/{file}",
-                f"{dir}/{secrets.token_urlsafe(8)}{checker}.{name[1]}"
+                f"{dir}/{secrets.token_urlsafe(8)}{checker}.{name[-1]}"
             )
