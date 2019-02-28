@@ -1,6 +1,6 @@
 {
   "localhost": false,
-  "domain": "https://coffee.alexflipnote.xyz/",
+  "domain": "https://coffee.alexflipnote.dev/",
   "title": "Coffee API",
   "description": "Start your day with a lovely coffee~",
   "imagefolder": "images",
