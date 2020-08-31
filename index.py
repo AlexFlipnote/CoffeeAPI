@@ -1,11 +1,11 @@
 import os
-import random
 import sys
 import json
-import utils
+import random
+import secrets
 
 from collections import namedtuple
-from flask import Flask, jsonify, send_from_directory, abort, send_file, render_template
+from quart import Quart, jsonify, send_from_directory, send_file, render_template
 
 # Checking if you have config.json on your API
 try:
@@ -16,25 +16,23 @@ except FileNotFoundError:
     sys.exit()
 
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 # Cache all images
 cache_images = [img for img in os.listdir(config.imagefolder)]
 
-# Check for changes in image folder
-extra_dirs = [config.imagefolder, "templates"]
-extra_files = extra_dirs[:]
-for extra_dir in extra_dirs:
-    for dirname, dirs, files in os.walk(extra_dir):
-        for filename in files:
-            filename = os.path.join(dirname, filename)
-            if os.path.isfile(filename):
-                extra_files.append(filename)
+
+def randomize(dir, checker):
+    """ Scout the images folder and giving token names to files missing """
+    for file in os.listdir(dir):
+        name = file.split(".")
+        if not name[0].endswith(checker):
+            os.rename(f"{dir}/{file}", f"{dir}/{secrets.token_urlsafe(8)}{checker}.{name[-1]}")
 
 
 @app.route("/")
-def index():
-    return render_template(
+async def index():
+    return await render_template(
         'index.html', config=config,
         background=random.choice(cache_images), images=len(cache_images)
     )
@@ -43,26 +41,26 @@ def index():
 # This is just for the memes, the holy 418 error \o/
 @app.route("/teapot")
 @app.route("/418")
-def teapot():
-    return abort(418)
+async def teapot():
+    return await render_template("418.html"), 418
 
 
 @app.route("/<filename>")
-def coffee(filename):
-    return send_from_directory(config.imagefolder, filename)
+async def coffee(filename):
+    return await send_from_directory(config.imagefolder, filename)
 
 
 @app.route("/assets/images/<filename>")
-def template_images(filename):
-    return send_from_directory("templates/images", filename)
+async def template_images(filename):
+    return await send_from_directory("templates/images", filename)
 
 
 @app.route("/random")
-def randomcoffee():
+async def randomcoffee():
     choose_random = random.choice(cache_images)
     name = choose_random.split(".")
 
-    return send_file(
+    return await send_file(
         f"{config.imagefolder}/{choose_random}",
         mimetype=f"image/{name[-1] if name[-1] != 'jpg' else 'jpeg'}",
         attachment_filename=choose_random
@@ -70,17 +68,11 @@ def randomcoffee():
 
 
 @app.route("/random.json")
-def randomcoffeeJSON():
-    domain = config.domain
-
-    if config.localhost:
-        domain = f"http://localhost:{config.port}/"
-
+async def randomcoffeeJSON():
     return jsonify({
-        "file": domain + random.choice(cache_images)
+        "file": config.domain + random.choice(cache_images)
     })
 
 
-if __name__ == '__main__':
-    utils.randomize(config.imagefolder, config.suffix)
-    app.run(port=config.port, debug=config.debug, extra_files=extra_files)
+randomize(config.imagefolder, config.suffix)
+app.run(port=config.port, debug=config.debug)

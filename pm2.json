@@ -2,9 +2,7 @@
   "apps": [
     {
       "name":"Coffee API",
-      "script":"index.py",
-      "interpreter" : "python3.6",
-      "interpreter_args": "-u"
+      "script":"start.sh"
     }
   ]
 }
