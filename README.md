@@ -1,4 +1,4 @@
-# CoffeeAPI
+# CoffeeAPI ☕
 An API that provides random coffee images
 
 # Open Source
