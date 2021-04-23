@@ -3,7 +3,7 @@
     <title>{{ config.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-    <link href="https://modesta.alexflipnote.dev/css/modesta.css" type="text/css" rel="stylesheet">
+    <link href="{{ config.domain }}assets/modesta.css" type="text/css" rel="stylesheet">
 
     <meta name="theme-color" content="#d35400">
     <meta content="{{ config.domain }}assets/profile.png" property="og:image" />
@@ -13,7 +13,7 @@
     <meta content="{{ config.description }}" property="og:description" />
     <meta content="{{ config.description }}" name="description" />
   </head>
-  <body class="github-font-standard">
+  <body class="dark-theme github">
     <section class="fullscreen">
       <div class="background" style="background-image: url('{{ background }}');"></div>
       <div class="center-object">
@@ -22,9 +22,9 @@
           <span class="undertitle">{{ config.description }}<br><i>Images in API: <b>{{ images }}</b></i></span>
         </section>
         <div class="buttons">
-          <a href="random" class="btn animation turquoise" target="_blank">Random coffee</a>
-          <a href="random.json" class="btn animation amethyst" target="_blank">Random coffee [ JSON ]</a>
-          <a href="https://github.com/AlexFlipnote/CoffeeAPI" class="btn animation github" target="_blank">GitHub</a>
+          <a href="random" class="btn animation turquoise-bg" target="_blank">Random coffee</a>
+          <a href="random.json" class="btn animation amethyst-bg" target="_blank">Random coffee [ JSON ]</a>
+          <a href="https://github.com/AlexFlipnote/CoffeeAPI" class="btn animation github-bg" target="_blank">GitHub</a>
         </div>
       </div>
     </section>

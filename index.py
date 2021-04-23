@@ -50,9 +50,9 @@ async def coffee(filename):
     return await send_from_directory(config.imagefolder, filename)
 
 
-@app.route("/assets/images/<filename>")
+@app.route("/assets/<filename>")
 async def template_images(filename):
-    return await send_from_directory("templates/images", filename)
+    return await send_from_directory("templates/assets", filename)
 
 
 @app.route("/random")
